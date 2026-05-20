@@ -542,23 +542,44 @@
 <script>
     let url = 'https://script.google.com/macros/s/AKfycbzWrcFRjd_DMNHp0unMykHmgnGPcK_E6sP-cxhwqYZ4v9sNSplGsxYjiWDDHvHWlgGu/exec'
     let form = document.querySelector('#contact-form');
-    form.addEventListener("submit", (e) => {
-        e.target.btn.innerHTML = "Submitting <i class='fa fa-paper-plane'></i>"
-        let d = new FormData(form);
-        fetch(url, {
-            method: "POST",
-            body: d
-        }).then((res) => res.text())
-            .then((finalRes) => {
-                e.target.btn.innerHTML = "Submit <i class='fa fa-paper-plane'></i>"
-                document.getElementById('res').innerHTML = finalRes.message;
-                form.reset();
-                setTimeout(() => {
-                    document.getElementById('res').innerHTML = '';
-                }, 5000)
-            })
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
-    })
+
+        e.target.btn.innerHTML =
+            "Submitting <i class='fa fa-paper-plane'></i>";
+
+        let d = new FormData(form);
+
+        try {
+
+            let res = await fetch(url, {
+                method: "POST",
+                body: d
+            });
+
+            let finalRes = await res.json();
+
+            e.target.btn.innerHTML =
+                "Submit <i class='fa fa-paper-plane'></i>";
+
+            // Only message show in UI
+            document.getElementById('res').innerHTML =
+                finalRes.message;
+
+            form.reset();
+
+            setTimeout(() => {
+                document.getElementById('res').innerHTML = '';
+            }, 5000);
+
+        } catch (err) {
+
+            console.log(err);
+
+            document.getElementById('res').innerHTML =
+                'Something went wrong!';
+        }
+    });
 </script>
 
 </html>
