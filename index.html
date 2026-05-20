@@ -551,7 +551,7 @@
         }).then((res) => res.text())
             .then((finalRes) => {
                 e.target.btn.innerHTML = "Submit <i class='fa fa-paper-plane'></i>"
-                document.getElementById('res').innerHTML = finalRes;
+                document.getElementById('res').innerHTML = finalRes.message;
                 form.reset();
                 setTimeout(() => {
                     document.getElementById('res').innerHTML = '';
